@@ -133,3 +133,64 @@ fs.writeFileSync(outputPath, JSON.stringify(articles, null, 2));
 
 console.log(`Successfully parsed ${articles.length} articles.`);
 console.log(`Data saved to ${outputPath}`);
+
+// Generate Sitemap
+generateSitemap(articles);
+
+// Generate robots.txt
+generateRobotsTxt();
+
+function generateSitemap(articles: Article[]) {
+  const domain = 'https://azizrakhimov.uz';
+  const today = new Date().toISOString().split('T')[0];
+  
+  let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${domain}/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${domain}/articles</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${domain}/graph</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`;
+
+  for (const article of articles) {
+    sitemapContent += `
+  <url>
+    <loc>${domain}/article/${article.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+  }
+
+  sitemapContent += `\n</urlset>`;
+
+  const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+  fs.writeFileSync(sitemapPath, sitemapContent, 'utf-8');
+  console.log(`Sitemap generated: ${sitemapPath}`);
+}
+
+function generateRobotsTxt() {
+  const robotsContent = `User-agent: *
+Allow: /
+Disallow: /search
+
+Sitemap: https://azizrakhimov.uz/sitemap.xml
+`;
+
+  const robotsPath = path.join(process.cwd(), 'public', 'robots.txt');
+  fs.writeFileSync(robotsPath, robotsContent, 'utf-8');
+  console.log(`robots.txt generated: ${robotsPath}`);
+}

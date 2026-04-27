@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@types/cytoscape": "^3.31.0",
+    "@unhead/vue": "^3.1.0",
     "cytoscape": "^3.33.2",
     "fuse.js": "^7.3.0",
     "pinia": "^3.0.4",

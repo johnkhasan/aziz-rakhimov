@@ -3,10 +3,19 @@ import { useArticlesStore } from '@/stores/articles';
 import { ref, computed } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 
 const store = useArticlesStore();
 const route = useRoute();
 const { t } = useI18n();
+
+useHead({
+  title: () => t('sidebar.articles'),
+  meta: [
+    { name: 'description', content: () => t('articles.searchPlaceholder') },
+    { property: 'og:title', content: () => t('sidebar.articles') },
+  ]
+});
 
 const searchQuery = ref('');
 const selectedCategory = ref((route.query.category as string) || '');

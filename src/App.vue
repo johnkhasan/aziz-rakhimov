@@ -4,10 +4,28 @@ import { RouterLink, RouterView } from 'vue-router';
 import { useArticlesStore } from './stores/articles';
 import { useAppStore } from './stores/app';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 
 const store = useArticlesStore();
 const appStore = useAppStore();
 const { t, locale } = useI18n();
+
+useHead({
+  titleTemplate: (title) => title ? `${title} | Aziz Rakhimov` : 'Aziz Rakhimov | Digital Garden',
+  meta: [
+    { name: 'description', content: 'Explore Aziz Rakhimov\'s thoughts, insights, and structured knowledge connected through a network of interlinked ideas.' },
+    { property: 'og:site_name', content: 'Aziz Rakhimov - Digital Garden' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:image', content: 'https://azizrakhimov.uz/og-image.jpg' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'theme-color', content: '#10b981' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://azizrakhimov.uz' },
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+  ]
+});
 
 onMounted(() => {
   store.fetchArticles();

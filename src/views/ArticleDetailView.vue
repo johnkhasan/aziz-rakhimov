@@ -3,6 +3,7 @@ import { useArticlesStore } from '@/stores/articles';
 import { computed, watch, ref, nextTick } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 
 const store = useArticlesStore();
 const route = useRoute();
@@ -27,6 +28,66 @@ const outgoingLinks = computed(() => {
   return article.value.outgoingLinks
     .map(slug => store.getArticleBySlug(slug))
     .filter(a => a !== undefined);
+});
+
+// Calculate reading time roughly (words / 200 = minutes)
+const readingTime = computed(() => {
+  if (!article.value) return 1;
+  const wordCount = article.value.content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+});
+
+// Dynamic SEO Head Tags
+useHead({
+  title: () => article.value ? article.value.title : t('article.notFound'),
+  meta: [
+    {
+      name: 'description',
+      content: () => article.value 
+        ? article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...'
+        : ''
+    },
+    { property: 'og:title', content: () => article.value?.title },
+    { 
+      property: 'og:description', 
+      content: () => article.value ? article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...' : ''
+    },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: () => `https://azizrakhimov.uz/article/${article.value?.slug}` },
+    { property: 'article:tag', content: () => article.value?.tags?.join(', ') },
+    { property: 'article:section', content: () => article.value?.category }
+  ],
+  link: [
+    { rel: 'canonical', href: () => `https://azizrakhimov.uz/article/${article.value?.slug}` }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: () => article.value ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        'headline': article.value.title,
+        'description': article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...',
+        'author': {
+          '@type': 'Person',
+          'name': 'Aziz Rakhimov',
+          'url': 'https://azizrakhimov.uz'
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'Aziz Rakhimov',
+          'logo': {
+            '@type': 'ImageObject',
+            'url': 'https://azizrakhimov.uz/vite.svg'
+          }
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id': `https://azizrakhimov.uz/article/${article.value.slug}`
+        }
+      }) : ''
+    }
+  ]
 });
 
 // Intercept wikilink clicks
@@ -75,6 +136,15 @@ watch(() => article.value, async () => {
         <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
           {{ article.title }}
         </h1>
+        
+        <div class="flex items-center gap-4 mt-4 text-sm text-slate-500">
+          <span class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {{ readingTime }} min read
+          </span>
+        </div>
         
         <div v-if="article.tags.length > 0" class="flex flex-wrap gap-2 mt-6">
           <span v-for="tag in article.tags" :key="tag" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-md text-xs font-medium">

@@ -4,10 +4,19 @@ import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import cytoscape from 'cytoscape';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 
 const store = useArticlesStore();
 const router = useRouter();
 const { t } = useI18n();
+
+useHead({
+  title: () => t('sidebar.graph'),
+  meta: [
+    { name: 'description', content: () => t('graph.description') },
+    { property: 'og:title', content: () => t('sidebar.graph') },
+  ]
+});
 
 const containerRef = ref<HTMLElement | null>(null);
 const cy = ref<cytoscape.Core | null>(null);

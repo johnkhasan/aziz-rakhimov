@@ -3,9 +3,19 @@ import { useArticlesStore } from '@/stores/articles';
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 
 const store = useArticlesStore();
 const { t } = useI18n();
+
+useHead({
+  title: () => t('home.title') + ' ' + t('home.subtitle'),
+  meta: [
+    { name: 'description', content: () => t('home.description') },
+    { property: 'og:title', content: () => t('home.title') + ' ' + t('home.subtitle') },
+    { property: 'og:description', content: () => t('home.description') },
+  ]
+});
 
 const stats = computed(() => [
   { name: t('home.totalArticles'), value: store.articles.length },
