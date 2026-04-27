@@ -46,13 +46,13 @@ useHead({
     {
       name: 'description',
       content: () => article.value 
-        ? article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...'
+        ? article.value.content.replace(/<[^>]*>?/gm, '').replace(/[#*[\]`]/g, '').substring(0, 155) + '...'
         : ''
     },
     { property: 'og:title', content: () => article.value?.title },
     { 
       property: 'og:description', 
-      content: () => article.value ? article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...' : ''
+      content: () => article.value ? article.value.content.replace(/<[^>]*>?/gm, '').replace(/[#*[\]`]/g, '').substring(0, 155) + '...' : ''
     },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: () => `https://azizrakhimov.uz/article/${article.value?.slug}` },
@@ -69,7 +69,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Article',
         'headline': article.value.title,
-        'description': article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...',
+        'description': article.value.content.replace(/<[^>]*>?/gm, '').replace(/[#*[\]`]/g, '').substring(0, 155) + '...',
         'author': {
           '@type': 'Person',
           'name': 'Aziz Rakhimov',

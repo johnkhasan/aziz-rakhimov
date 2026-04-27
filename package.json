@@ -9,6 +9,7 @@
     "dev": "vite",
     "prebuild": "pnpm parse-vault",
     "build": "run-p type-check \"build-only {@}\" --",
+    "postbuild": "tsx scripts/generate-og-pages.ts",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",

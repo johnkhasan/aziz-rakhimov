@@ -113,7 +113,7 @@ const filteredArticles = computed(() => {
             </div>
             <!-- Snippet -->
             <p class="mt-3 text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
-              {{ article.content.replace(/[#*\[\]`]/g, '').substring(0, 150) }}...
+              {{ article.content.replace(/<[^>]*>?/gm, '').replace(/[#*\[\]`]/g, '').substring(0, 150) }}...
             </p>
           </div>
         </div>
