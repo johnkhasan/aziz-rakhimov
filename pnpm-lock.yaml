@@ -47,6 +47,9 @@ importers:
       vue-router:
         specifier: ^5.0.4
         version: 5.0.6(pinia@3.0.4(typescript@6.0.3)(vue@3.6.0-beta.10(typescript@6.0.3)))(vue@3.6.0-beta.10(typescript@6.0.3))
+      workbox-window:
+        specifier: ^7.4.0
+        version: 7.4.0
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.19
