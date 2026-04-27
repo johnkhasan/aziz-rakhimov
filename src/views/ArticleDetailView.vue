@@ -93,7 +93,7 @@ watch(() => article.value, async () => {
     </article>
 
     <!-- Sidebar / Connections -->
-    <aside class="w-full lg:w-80 flex-shrink-0 space-y-6">
+    <aside class="w-full lg:w-80 flex-shrink-0 space-y-6 lg:sticky lg:top-0 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-2">
       <div class="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
         <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

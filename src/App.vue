@@ -23,17 +23,17 @@ const changeLocale = () => {
 <template>
   <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
     
-    <!-- Mobile Sidebar Backdrop -->
+    <!-- Mobile/Tablet Sidebar Backdrop -->
     <div 
       v-if="appStore.sidebarOpen" 
       @click="appStore.toggleSidebar"
-      class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
+      class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
     ></div>
 
     <!-- Sidebar -->
     <aside 
       :class="[
-        'fixed md:static inset-y-0 left-0 z-50 w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0',
+        'fixed lg:static inset-y-0 left-0 z-50 w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0',
         appStore.sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
       ]"
     >
@@ -44,8 +44,8 @@ const changeLocale = () => {
           </h1>
           <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ t('home.subtitle') }}</p>
         </div>
-        <!-- Close button mobile only -->
-        <button @click="appStore.toggleSidebar" class="md:hidden text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
+        <!-- Close button mobile/tablet only -->
+        <button @click="appStore.toggleSidebar" class="lg:hidden text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -121,8 +121,8 @@ const changeLocale = () => {
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
-      <!-- Mobile header -->
-      <header class="md:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-30">
+      <!-- Mobile/Tablet header -->
+      <header class="lg:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-30">
         <div class="flex items-center gap-3">
           <button @click="appStore.toggleSidebar" class="p-2 -ml-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
