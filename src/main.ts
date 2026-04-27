@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 import { i18n } from './i18n'
 
-const updateSW = registerSW({
+registerSW({
   onNeedRefresh() {
     // We can show a prompt here. For now, it will auto-update based on config
   },

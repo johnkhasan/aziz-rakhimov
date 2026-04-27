@@ -7,6 +7,7 @@ import { useHead } from '@unhead/vue';
 import { calculateReadingTime } from '@/utils/readingTime';
 import ReadingProgressBar from '@/components/ReadingProgressBar.vue';
 import TableOfContents from '@/components/TableOfContents.vue';
+import ShareButton from '@/components/ShareButton.vue';
 
 const store = useArticlesStore();
 const route = useRoute();
@@ -168,13 +169,15 @@ watch(() => article.value, async () => {
     <!-- Main Content -->
     <article class="flex-1 min-w-0 bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-10 shadow-sm border border-slate-200 dark:border-slate-800">
       <header class="mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
-        <div class="flex items-center gap-3 mb-4">
+        <div class="flex items-center justify-between gap-3 mb-6">
           <RouterLink 
             :to="{ path: '/articles', query: { category: article.category } }"
-            class="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+            class="inline-flex items-center px-3 py-1 rounded-full font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 text-sm hover:underline"
           >
             {{ article.category }}
           </RouterLink>
+
+          <ShareButton :title="article.title" :slug="article.slug" />
         </div>
         <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
           {{ article.title }}

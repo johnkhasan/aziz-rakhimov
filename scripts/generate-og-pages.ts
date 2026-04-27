@@ -18,7 +18,7 @@ for (const article of articles) {
   const slug = article.slug;
   const title = article.title;
   // Strip html tags from description and shorten
-  let description = article.content.replace(/<[^>]*>?/gm, '').replace(/[#*\[\]`]/g, '').trim().substring(0, 155);
+  let description = article.content.replace(/<[^>]*>?/gm, '').replace(/[#*[\]`]/g, '').trim().substring(0, 155);
   // Encode quotes to prevent HTML breaking
   description = description.replace(/"/g, '&quot;');
   const safeTitle = title.replace(/"/g, '&quot;');
