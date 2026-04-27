@@ -171,7 +171,6 @@ const initGraph = () => {
   // Interaction
   cy.value.on('tap', 'node', (evt) => {
     const node = evt.target;
-    const id = node.id();
     
     // Highlight connected
     cy.value!.elements().removeClass('highlighted-node highlighted-edge faded');
@@ -201,7 +200,7 @@ const initGraph = () => {
     updateDarkModeStyle();
   }
 
-  const layout = cy.value.layout({ name: 'cose' } as any);
+  const layout = cy.value.layout({ name: 'cose' } as cytoscape.LayoutOptions);
   layout.on('layoutstop', () => {
     loadingGraph.value = false;
   });
