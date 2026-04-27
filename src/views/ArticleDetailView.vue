@@ -45,13 +45,13 @@ useHead({
     {
       name: 'description',
       content: () => article.value 
-        ? article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...'
+        ? article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...'
         : ''
     },
     { property: 'og:title', content: () => article.value?.title },
     { 
       property: 'og:description', 
-      content: () => article.value ? article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...' : ''
+      content: () => article.value ? article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...' : ''
     },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: () => `https://azizrakhimov.uz/article/${article.value?.slug}` },
@@ -68,7 +68,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Article',
         'headline': article.value.title,
-        'description': article.value.content.replace(/[#*\[\]`]/g, '').substring(0, 155) + '...',
+        'description': article.value.content.replace(/[#*[\]`]/g, '').substring(0, 155) + '...',
         'author': {
           '@type': 'Person',
           'name': 'Aziz Rakhimov',
@@ -91,25 +91,66 @@ useHead({
   ]
 });
 
-// Intercept wikilink clicks
+// Intercept wikilink and anchor clicks
 const handleContentClick = (e: MouseEvent) => {
-  const target = e.target as HTMLElement;
-  if (target.tagName === 'A' && target.classList.contains('wikilink')) {
+  const target = (e.target as HTMLElement).closest('a');
+  if (!target) return;
+
+  if (target.classList.contains('wikilink')) {
     e.preventDefault();
     const href = target.getAttribute('href');
     if (href) {
       router.push(href);
+    }
+  } else if (target.getAttribute('href')?.startsWith('#')) {
+    e.preventDefault();
+    const hash = target.getAttribute('href');
+    if (hash) {
+      const el = document.querySelector(hash);
+      const scrollContainer = document.getElementById('main-scroll-area');
+      if (el && scrollContainer) {
+        const containerTop = scrollContainer.getBoundingClientRect().top;
+        const elTop = el.getBoundingClientRect().top;
+        const currentScroll = scrollContainer.scrollTop;
+        
+        scrollContainer.scrollTo({
+          top: currentScroll + elTop - containerTop - 40, // 40px top padding
+          behavior: 'smooth'
+        });
+        
+        // Update URL hash safely
+        history.pushState(null, '', hash);
+      }
     }
   }
 };
 
 watch(() => article.value, async () => {
   await nextTick();
-  // We can do syntax highlighting or other post-processing here if needed
-});
+  
+  // Handle hash navigation on page load
+  if (route.hash) {
+    setTimeout(() => {
+      const el = document.querySelector(route.hash);
+      const scrollContainer = document.getElementById('main-scroll-area');
+      if (el && scrollContainer) {
+        const containerTop = scrollContainer.getBoundingClientRect().top;
+        const elTop = el.getBoundingClientRect().top;
+        const currentScroll = scrollContainer.scrollTop;
+        
+        scrollContainer.scrollTo({
+          top: currentScroll + elTop - containerTop - 40,
+          behavior: 'smooth'
+        });
+      }
+    }, 300); // Wait for images/layout to settle
+  }
+}, { immediate: true });
 </script>
 
 <template>
+  <ReadingProgressBar />
+
   <div v-if="store.loading" class="flex justify-center py-20">
     <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500"></div>
   </div>

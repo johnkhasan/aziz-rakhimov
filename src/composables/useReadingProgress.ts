@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, Ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 export function useReadingProgress(containerId: string = 'main-scroll-area') {
   const progress = ref(0);

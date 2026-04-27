@@ -3,12 +3,21 @@ import path from 'path';
 import { globSync } from 'glob';
 import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
+import markdownItAnchor from 'markdown-it-anchor';
 import slugify from 'slugify';
 
 const md = new MarkdownIt({
   html: true,
   breaks: true,
   linkify: true,
+}).use(markdownItAnchor, {
+  level: [2, 3, 4],
+  slugify: (s) => slugify(s, { lower: true, strict: true, locale: 'uz' }),
+  permalink: markdownItAnchor.permalink.linkInsideHeader({
+    symbol: '#',
+    placement: 'after',
+    class: 'header-anchor text-slate-300 hover:text-emerald-500 dark:text-slate-600 dark:hover:text-emerald-400 no-underline ml-2 opacity-0 transition-opacity',
+  }),
 });
 
 const VAULT_DIR = path.resolve(process.cwd(), 'aziz-rahimov-blog-main');
@@ -50,7 +59,7 @@ files.forEach(file => {
   const { data, content } = matter(rawContent);
   
   const parsedPath = path.parse(file);
-  let title = parsedPath.name;
+  const title = parsedPath.name;
   
   // If title has tags like #tag, clean it (optional)
   // title = title.replace(/#\S+/g, '').trim();
@@ -91,7 +100,7 @@ files.forEach(file => {
   }
 
   // Preprocess content to convert wikilinks to HTML links
-  let processedContent = content.replace(/\[\[(.*?)\]\]/g, (match, link) => {
+  const processedContent = content.replace(/\[\[(.*?)\]\]/g, (match, link) => {
     const parts = link.split('|');
     const target = parts[0];
     const text = parts[1] || target;

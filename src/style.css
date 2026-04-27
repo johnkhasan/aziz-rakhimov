@@ -10,3 +10,11 @@
     @apply bg-slate-900 text-slate-100;
   }
 }
+
+@layer utilities {
+  .prose h2:hover .header-anchor,
+  .prose h3:hover .header-anchor,
+  .prose h4:hover .header-anchor {
+    @apply opacity-100;
+  }
+}
