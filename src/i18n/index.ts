@@ -55,7 +55,7 @@ const messages = {
     home: {
       title: 'Xush kelibsiz',
       subtitle: 'Raqamli Bog\'',
-      description: 'Aziz Raximovning fikrlari, tushunchalari va bir-biriga bog\'langan g\'oyalar tarmog\'i orqali tuzilgan bilimlarni kashf eting.',
+      description: 'Aziz Rahimovning fikrlari, tushunchalari va bir-biriga bog\'langan g\'oyalar tarmog\'i orqali tuzilgan bilimlarni kashf eting.',
       totalArticles: 'Jami Maqolalar',
       categories: 'Kategoriyalar',
       tags: 'Teglar',
