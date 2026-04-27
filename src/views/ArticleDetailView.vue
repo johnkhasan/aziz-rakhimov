@@ -4,6 +4,8 @@ import { computed, watch, ref, nextTick } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@unhead/vue';
+import { calculateReadingTime } from '@/utils/readingTime';
+import ReadingProgressBar from '@/components/ReadingProgressBar.vue';
 
 const store = useArticlesStore();
 const route = useRoute();
@@ -33,8 +35,7 @@ const outgoingLinks = computed(() => {
 // Calculate reading time roughly (words / 200 = minutes)
 const readingTime = computed(() => {
   if (!article.value) return 1;
-  const wordCount = article.value.content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
+  return calculateReadingTime(article.value.content);
 });
 
 // Dynamic SEO Head Tags

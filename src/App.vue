@@ -153,7 +153,7 @@ const changeLocale = () => {
         </div>
       </header>
 
-      <div class="flex-1 overflow-y-auto w-full h-full p-4 md:p-8">
+      <div id="main-scroll-area" class="flex-1 overflow-y-auto w-full h-full p-4 md:p-8">
         <div class="max-w-5xl mx-auto h-full flex flex-col">
           <RouterView />
         </div>
